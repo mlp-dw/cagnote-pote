@@ -92,8 +92,7 @@
             "@auto-scripts"
         ],
         "compile" : [
-            "composer install",
-            "php bin/console doctrine:schema:update"
+            "composer install"
         ]
     },
     "conflict": {
