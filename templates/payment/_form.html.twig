@@ -1,0 +1,52 @@
+{{ form_start(form) }}
+
+    <div class="input-field col s12 l6">
+        {{ form_widget(form.amount, { 'attr' : {'class ':'validate'  }}) }}
+        {{ form_label(form.amount) }}
+    </div>
+    <div class="input-field col s12 l12">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name, { 'attr' : { 'class ':'validate' }}) }}
+    </div>
+    <div class="input-field col s12 l6">
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email, { 'attr' : { 'class ':'validate' }}) }}
+    </div>
+
+
+    <p class=" col s12 l12">
+        <label for="payment_participant_isAnonymous" >
+            {{ form_widget(form.isAnonymous, { 'attr' : {'class ':'validate' } }) }}
+            <span>Masquer mon identité auprès des autres participants</span>
+        </label>
+    </p>
+
+    {#  PAIMENT FORM #}
+    
+
+    <div class="input-field col s12">
+        <h5 class="center">Paiement</h5>
+        <div class="form-row">
+            <label for="card-element">
+            Credit or debit card
+            </label> 
+            <div id="card-element">
+            <!-- A Stripe Element will be inserted here. -->
+            
+            </div>
+            <div id="card-errors" role="alert"></div>
+        </div>
+    </div>
+  
+   
+
+    <div class="input-field col s12 l6 center-items">
+        <a href="" class="btn btn-large waves-effect waves-light grey col s12">Annuler</a>
+    </div> 
+    <div class="input-field col s12 l6 center-items">
+        <button class="btn btn-large waves-effect waves-light pink lighten-1 col s12" type="submit">
+            {{ button_label|default('Participer') }}
+            <i class="material-icons right">euro_symbol</i>
+        </button>
+    </div> 
+{{ form_end(form) }} 

@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <h1 class="header center white-text light">Campaign Index</h1>
+                <div class="row center">
+                    <a class="btn" href="{{ path('app_campaign_new') }}">Create new</a>
+                </div>
+            </div>
+        </div>
+        <div class="parallax"><img src="/assets/images/8.jpg" alt="Titre de la campagne"></div>
+    </div>
+
+    <table class="highlight responsive-table">
+        <thead>
+            <tr>
+                {# <th>Id</th> #}
+                <th>Title</th>
+                <th>Content</th>
+                <th>Goal</th>
+                <th>Name</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for campaign in campaigns %}
+            <tr>
+                {# <td>{{ campaign.id }}</td> #}
+                <td>{{ campaign.title }}</td>
+                <td>{{ campaign.content }}</td>
+                <td>{{ campaign.goal|format_number(locale='fr') }}</td>
+                <td>{{ campaign.name }}</td>
+                <td>{{ campaign.createdAt ? campaign.createdAt|date('d-m-Y') : '' }}</td>
+                <td>{{ campaign.updatedAt ? campaign.updatedAt|date('d-m-Y') : '' }}</td>
+                <td>
+                    <a class="btn" href="{{ path('app_campaign_show', {'id': campaign.id}) }}">show</a>
+                    <a class="btn" href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

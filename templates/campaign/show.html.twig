@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <h1 class="header center white-text light">{{ campaign.title }}</h1>
+                <div class="row center">
+                    <h5 class="header col s12 light">- Organisée par : {{ campaign.name }} -</h5>
+                </div>
+            </div>
+        </div>
+        <div class="parallax"><img src="/assets/images/8.jpg" alt="Titre de la campagne"></div>
+    </div>
+
+    <!-- Show progress -->
+    <section class="progress-section">
+        <div class="progress">
+            <div class="determinate" style="width: {{ campaign.progressBar }}%">
+                {% if campaign.progressBar == 100 %}
+                    <span>Objectif atteint</span>
+                {% else %}
+                    <span> {{ campaign.progressBar }} % de l'objectif</span>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <div class="container participe">
+        <div class="section">
+            <!-- Participation section -->
+             <div class="row">
+                <div class="card col s12 m12 l8 offset-l2">
+                    <div class="card-content">
+                        <form action="{{ path('app_payment_new', {'id': campaign.id})}}" method="post">
+                            <div class="input-field col s12 l6">
+                                <input name='amount' id="amount" type="number" class="validate" min="10">
+                                <label for="amount">Votre participation</label>
+                            </div>
+                            <button type="submit" class="btn-large waves-effect waves-light pink lighten-1 col s12 l6">Participer</button>
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col s12 center">
+                    <h4>A propos de la campagne</h4>
+                </div>
+            </div>
+            <!--   Icon Section   -->
+            <div class="row">
+                <div class="col s12 m6 l3 offset-l3">
+                    <div class="icon-block center">
+                        <div class="btn-large btn-floating white">
+                            <a href="#participant_list">
+                                <i class="material-icons teal-text">person</i>
+                            </a>
+                        </div>
+                        <h3 class="center">{{ campaign.participants|length }}</h3>
+                        <p class="light">Participants</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m6 l3">
+                    <div class="icon-block center">
+                        <div class="btn-large btn-floating white"><i class="material-icons teal-text">redeem</i></div>
+                        <h3 class="center">{{ campaign.RecoltedAmount|format_number(locale='fr') }}</h3>
+                        <p class="light">euros récoltés</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Form section -->
+            <div class="row">
+                <form>
+                    <div class="input-field col s12">
+                        <label for="description">Description</label>
+                        <textarea id="description" class="materialize-textarea" readonly="readonly">{{ campaign.content }}</textarea>
+                    </div>
+                    <div class="input-field col s12 l6">
+                        <input id="goal" type="number" readonly="readonly" value="{{ campaign.goal }}">
+                        <label for="goal">Objectif (€)</label>
+                    </div>
+                    <div class="col s12 l6 offset-l3">
+                        <button class="btn btn-large waves-effect waves-light col s12 white-text light" type="submit" name="action">
+                            <a class="white-text light" href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">
+                                Modifiez la campagne
+                                <i class="material-icons right">edit</i>
+                            </a>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- List -->
+            <div class="row">
+                <div class="col s12 center">
+                    <h4 id="participant_list">Liste des participants</h4>
+                </div>
+                <div class="col s12">
+                    <table class="highlight responsive-table">
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Participation</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for participant in campaign.participants %}
+                                {% if participant.isAnonymous == 0 %}
+                                <tr>
+                                    <td>{{ participant.name }}</td>
+                                    <td>{{ participant.getSum()|format_number(locale='fr') }} €</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td>Anonyme</td>
+                                    <td>{{ participant.getSum()|format_number(locale='fr') }} €</td>
+                                </tr>
+                                {% endif %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">no records found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <div class="row center col s12 l6 offset-l3">
+                    <a class="btn" href="{{ path('app_campaign_index') }}">back to list</a>
+                    <a>{{ include('campaign/_delete_form.html.twig') }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="parallax"><img src="/assets/images/10.jpg" alt="Une campagne pensée pour vous"></div>
+    </div>
+
+{% endblock %}
